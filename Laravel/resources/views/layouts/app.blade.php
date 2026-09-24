@@ -77,6 +77,7 @@
         <a href="/">🏠 Inicio</a>
         <a href="/menu">🍔 Menú</a>
         <a href="/contacto">📞 Contacto</a>
+        <a href="/reservas">📅 Reservas</a>
     </nav>
 
     <!-- 4. 📍 EL HUECO MÁGICO donde se inserta cada página -->
