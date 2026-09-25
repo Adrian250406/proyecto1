@@ -4,19 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 1. Título dinámico: cambia según la página -->
     <title>Restaurante - @yield('titulo')</title>
 
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=outfit:400,600,700" rel="stylesheet" />
 
-    <!-- 2. Los estilos CSS globales (se aplican a todo el sistema) -->
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
         }
 
         body {
@@ -72,7 +68,6 @@
 
 <body>
 
-    <!-- 3. Barra de navegación común -->
     <nav>
         <a href="/">🏠 Inicio</a>
         <a href="/menu">🍔 Menú</a>
@@ -80,12 +75,10 @@
         <a href="/reservas">📅 Reservas</a>
     </nav>
 
-    <!-- 4. 📍 EL HUECO MÁGICO donde se inserta cada página -->
     <main class="card">
         @yield('contenido')
     </main>
 
-    <!-- 5. Pie de página común -->
     <footer>
         © 2026 Restaurante de Adrián
     </footer>
