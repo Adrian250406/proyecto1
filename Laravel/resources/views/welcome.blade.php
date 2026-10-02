@@ -15,7 +15,7 @@
         Comida tradicional preparada al momento con ingredientes 100% frescos y la mejor sazón.
     </p>
 
-    <a href="/menu"
+    <a href="/menu" wire:navigate
         style="display: inline-block; background: #ef4444; color: white; padding: 0.85rem 2rem; border-radius: 0.75rem; text-decoration: none; font-weight: 600; box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);">
         Ver la Carta de Platos ➔
     </a>
