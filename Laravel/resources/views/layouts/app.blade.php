@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurante - @yield('titulo')</title>
 
-
     <style>
         * {
             margin: 0;
@@ -64,15 +63,34 @@
             padding-top: 2rem;
         }
     </style>
+
+    @livewireStyles
 </head>
 
 <body>
 
     <nav>
-        <a href="/">🏠 Inicio</a>
-        <a href="/menu">🍔 Menú</a>
-        <a href="/contacto">📞 Contacto</a>
-        <a href="/reservas">📅 Reservas</a>
+        <a href="/" wire:navigate>🏠 Inicio</a>
+        <a href="/menu" wire:navigate>🍔 Menú</a>
+        <a href="/contacto" wire:navigate>📞 Contacto</a>
+        <a href="/reservas" wire:navigate>📅 Reservas</a>
+        @auth
+            <a href="/admin/reservas" wire:navigate>⚙️ Panel Admin</a>
+            <form action="{{ route('logout') }}" method="POST" style="display: inline; margin-left: 0.5rem;">
+                @csrf
+                <button type="submit"
+                    style="background: none; border: none; color: #f43f5e; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
+                    🚪 Salir
+                </button>
+            </form>
+        @endauth
+
+        @guest
+            <a href="/login" wire:navigate style="color: #64748b; font-size: 0.85rem; margin-left: 1rem;">
+                🔑 Acceso Admin
+            </a>
+        @endguest
+
     </nav>
 
     <main class="card">
@@ -80,9 +98,10 @@
     </main>
 
     <footer>
-        © 2026 Restaurante de Adrián
+        © 2026 Restaurante de Adrián Jara
     </footer>
 
+    @livewireScripts
 </body>
 
 </html>
