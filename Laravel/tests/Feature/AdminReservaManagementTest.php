@@ -165,4 +165,48 @@ class AdminReservaManagementTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Ana Paula Valdivia');
     }
+
+    /**
+     * Test 7: El comando de consola reservas:liberar-vencidas cancela reservas de más de 15 min de retraso.
+     */
+    public function test_comando_libera_mesas_con_tolerancia_vencida(): void
+    {
+        // Reserva vencida (hace 30 minutos)
+        $resVencida = reserva::create([
+            'nombre' => 'Cliente Impuntual',
+            'personas' => 4,
+            'telefono' => '911223344',
+            'fecha_reserva' => now('America/Lima')->subMinutes(30),
+            'estado' => 'Pendiente',
+            'mesa' => 'Mesa 5',
+        ]);
+
+        // Reserva futura puntual (en 2 horas)
+        $resFutura = reserva::create([
+            'nombre' => 'Cliente Puntual',
+            'personas' => 2,
+            'telefono' => '922334455',
+            'fecha_reserva' => now('America/Lima')->addHours(2),
+            'estado' => 'Pendiente',
+            'mesa' => 'Terraza 1',
+        ]);
+
+        $this->artisan('reservas:liberar-vencidas')
+            ->expectsOutputToContain('Se liberaron 1 reservas/mesas vencidas')
+            ->assertExitCode(0);
+
+        // Verificar que la vencida fue cancelada y mesa liberada
+        $this->assertDatabaseHas('reservas', [
+            'id' => $resVencida->id,
+            'estado' => 'Cancelada',
+            'mesa' => null,
+        ]);
+
+        // Verificar que la futura permanece pendiente con su mesa asignada
+        $this->assertDatabaseHas('reservas', [
+            'id' => $resFutura->id,
+            'estado' => 'Pendiente',
+            'mesa' => 'Terraza 1',
+        ]);
+    }
 }

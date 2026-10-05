@@ -12,7 +12,7 @@
                 <span>⚙️</span> Gestión de Salón & Mesas
             </h1>
             <p style="color: #94a3b8; margin: 0.3rem 0 0 0; font-size: 0.95rem;">
-                Control de aforo, asignación de mesas en salón y seguimiento operativo de comensales.
+                Control de aforo en tiempo real, asignación de mesas y monitoreo de tolerancia (15 min).
             </p>
         </div>
         <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
@@ -115,15 +115,26 @@
                     <th style="padding: 0.85rem 1rem;">ID</th>
                     <th style="padding: 0.85rem 1rem;">Cliente & Contacto</th>
                     <th style="padding: 0.85rem 1rem; text-align: center;">Pax</th>
-                    <th style="padding: 0.85rem 1rem;">Fecha & Hora</th>
+                    <th style="padding: 0.85rem 1rem;">Fecha, Hora & Tolerancia</th>
                     <th style="padding: 0.85rem 1rem;">Mesa Asignada</th>
                     <th style="padding: 0.85rem 1rem;">Estado Operativo</th>
                     <th style="padding: 0.85rem 1rem; text-align: center;">Acciones</th>
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $ahoraLima = \Carbon\Carbon::now('America/Lima');
+                @endphp
+
                 @forelse($reservas as $res)
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
+                    @php
+                        $fechaRes = \Carbon\Carbon::parse($res->fecha_reserva);
+                        $minutosTranscurridos = $fechaRes->diffInMinutes($ahoraLima, false);
+                        $toleranciaVencida = ($res->estado === 'Pendiente' && $minutosTranscurridos > 15);
+                        $enTolerancia = ($res->estado === 'Pendiente' && $minutosTranscurridos >= 0 && $minutosTranscurridos <= 15);
+                    @endphp
+
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); {{ $toleranciaVencida ? 'background: rgba(239, 68, 68, 0.05);' : '' }} transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='{{ $toleranciaVencida ? 'rgba(239, 68, 68, 0.05)' : 'transparent' }}'">
                         
                         <!-- ID -->
                         <td style="padding: 0.85rem 1rem; color: #94a3b8; font-weight: 700;">#{{ $res->id }}</td>
@@ -155,14 +166,25 @@
                             </span>
                         </td>
 
-                        <!-- Fecha / Hora -->
+                        <!-- Fecha / Hora & Monitoreo de Tolerancia -->
                         <td style="padding: 0.85rem 1rem;">
                             <div style="color: #ffffff; font-weight: 600;">
-                                {{ \Carbon\Carbon::parse($res->fecha_reserva)->format('d/m/Y') }}
+                                {{ $fechaRes->format('d/m/Y') }}
                             </div>
                             <div style="color: #38bdf8; font-size: 0.8rem; font-weight: 700;">
-                                🕒 {{ \Carbon\Carbon::parse($res->fecha_reserva)->format('h:i A') }}
+                                🕒 {{ $fechaRes->format('h:i A') }}
                             </div>
+
+                            <!-- Alertas de Tolerancia de 15 minutos en vivo -->
+                            @if($toleranciaVencida)
+                                <div style="margin-top: 0.3rem; display: inline-block; background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid #ef4444; padding: 0.15rem 0.45rem; border-radius: 0.35rem; font-size: 0.72rem; font-weight: 800;">
+                                    🚨 Tolerancia Vencida (+{{ $minutosTranscurridos }}m)
+                                </div>
+                            @elseif($enTolerancia)
+                                <div style="margin-top: 0.3rem; display: inline-block; background: rgba(245, 158, 11, 0.2); color: #fde047; border: 1px solid #f59e0b; padding: 0.15rem 0.45rem; border-radius: 0.35rem; font-size: 0.72rem; font-weight: 800;">
+                                    ⏳ En Tolerancia (Quedan {{ 15 - $minutosTranscurridos }}m)
+                                </div>
+                            @endif
                         </td>
 
                         <!-- Mesa Asignada (Selector Rápido) -->
@@ -361,7 +383,6 @@
         document.getElementById('editNotas').value = reserva.notas || '';
 
         if (reserva.fecha_reserva) {
-            // Formatear a YYYY-MM-DDTHH:mm para input datetime-local
             const d = new Date(reserva.fecha_reserva);
             const pad = (num) => String(num).padStart(2, '0');
             const formatted = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());

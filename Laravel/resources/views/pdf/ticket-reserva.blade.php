@@ -150,10 +150,18 @@
         </table>
 
         {{-- Instrucciones de Llegada --}}
+        @php
+            $horaPactada = \Carbon\Carbon::parse($reserva->fecha_reserva);
+            $horaLimite = $horaPactada->copy()->addMinutes(15)->format('h:i A');
+        @endphp
+
         <div class="instructions">
             <strong>&bull; Términos y Tolerancia de Salón:</strong><br>
-            Presente este ticket en recepción al llegar. Contamos con una tolerancia de espera máxima de <strong>15 minutos</strong> respecto a su hora pactada.
+            Presente este ticket en recepción al llegar. Su mesa estará reservada estrictamente hasta las
+            <strong>{{ $horaLimite }}</strong> (15 minutos de tolerancia respecto a su hora de las
+            {{ $horaPactada->format('h:i A') }}).
         </div>
+
 
         {{-- Pie de Comprobante --}}
         <div class="footer">
