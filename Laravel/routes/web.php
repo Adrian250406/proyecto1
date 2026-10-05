@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,8 @@ Route::get('/reservas', function () {
     return view('reservas');
 })->name('reservas.create');
 
+Route::get('/reservas/{id}/pdf', [ReservaController::class, 'descargarPdf'])->name('reservas.pdf');
+
 Route::post('/reservas', [ReservaController::class, 'store'])->name('reservas.store');
 
 /*
@@ -42,6 +45,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/reservas', [ReservaController::class, 'index'])->name('admin.reservas.index');
     Route::put('/reservas/{id}/status', [ReservaController::class, 'updateStatus'])->name('admin.reservas.updateStatus');
 });

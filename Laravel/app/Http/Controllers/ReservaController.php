@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\reserva;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReservaController extends Controller
 {
@@ -51,14 +52,14 @@ class ReservaController extends Controller
             ],
         ], [
             // 💬 MENSAJES CLAROS EN ESPAÑOL:
-            'nombre.required'              => 'Por favor, ingresa tu nombre.',
-            'nombre.min'                   => 'El nombre debe tener al menos 3 letras.',
-            'nombre.regex'                 => 'El nombre solo puede contener letras y espacios (no números ni símbolos).',
-            'personas.min'                 => 'La reserva mínima es para 1 persona.',
-            'personas.max'                 => 'El aforo máximo por reserva web es de 20 personas.',
-            'telefono.required'            => 'El teléfono celular es obligatorio.',
-            'telefono.regex'               => 'El teléfono debe ser un celular de Perú válido (9 dígitos y empezar con 9).',
-            'fecha_reserva.required'       => 'Debes seleccionar la fecha y hora de la reserva.',
+            'nombre.required' => 'Por favor, ingresa tu nombre.',
+            'nombre.min' => 'El nombre debe tener al menos 3 letras.',
+            'nombre.regex' => 'El nombre solo puede contener letras y espacios (no números ni símbolos).',
+            'personas.min' => 'La reserva mínima es para 1 persona.',
+            'personas.max' => 'El aforo máximo por reserva web es de 20 personas.',
+            'telefono.required' => 'El teléfono celular es obligatorio.',
+            'telefono.regex' => 'El teléfono debe ser un celular de Perú válido (9 dígitos y empezar con 9).',
+            'fecha_reserva.required' => 'Debes seleccionar la fecha y hora de la reserva.',
             'fecha_reserva.after_or_equal' => 'Las reservas deben realizarse con al menos 30 minutos de anticipación respecto a la hora actual de Perú.',
         ]);
 
@@ -66,8 +67,21 @@ class ReservaController extends Controller
 
         $reserva = reserva::create($validados);
 
-        return redirect()->back()->with('success', "¡Mesa reservada exitosamente para {$reserva->nombre}! Tu código es #{$reserva->id}.");
+        return redirect()->back()
+            ->with('success', "¡Mesa reservada exitosamente para {$reserva->nombre}! Tu código es #{$reserva->id}.")
+            ->with('reserva_id', $reserva->id);
     }
+
+    /**
+     * Genera y descarga el comprobante digital de la reserva en PDF.
+     */
+    public function descargarPdf($id)
+    {
+        $reserva = reserva::findOrFail($id);
+        $pdf = Pdf::loadView('pdf.ticket-reserva', compact('reserva'));
+        return $pdf->stream("ticket-reserva-{$reserva->id}.pdf");
+    }
+
 
     /**
      * Actualiza el estado operativo de una reserva (Confirmada, Cancelada, Completada).

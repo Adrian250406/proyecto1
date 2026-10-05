@@ -1,0 +1,22 @@
+{
+    "name": "Restaurante El Buen Sabor",
+    "short_name": "El Buen Sabor",
+    "description": "Sistema Web y PWA de Gestión Gastronómica Criolla Peruana",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0b0f19",
+    "theme_color": "#0b0f19",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "/images/platos/ceviche.jpg",
+            "sizes": "192x192",
+            "type": "image/jpeg"
+        },
+        {
+            "src": "/images/platos/lomo-saltado.jpg",
+            "sizes": "512x512",
+            "type": "image/jpeg"
+        }
+    ]
+}

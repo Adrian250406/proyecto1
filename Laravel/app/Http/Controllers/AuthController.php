@@ -10,9 +10,9 @@ class AuthController extends Controller
     // 1. Muestra la pantalla con el formulario de login
     public function showLoginForm()
     {
-        // Si ya está logueado, lo mandamos directo al panel de admin
+        // Si ya está logueado, lo mandamos directo al Dashboard de admin
         if (Auth::check()) {
-            return redirect()->route('admin.reservas.index');
+            return redirect()->route('admin.dashboard');
         }
         return view('auth.login');
     }
@@ -33,7 +33,7 @@ class AuthController extends Controller
         // Intentamos iniciar sesión con Auth::attempt
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('admin.reservas.index'))
+            return redirect()->intended(route('admin.dashboard'))
                 ->with('success', '¡Bienvenido al Panel Administrativo!');
         }
 
