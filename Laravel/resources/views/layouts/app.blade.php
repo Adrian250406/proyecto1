@@ -190,6 +190,7 @@
         @auth
             <a href="/admin/dashboard" wire:navigate>📊 Dashboard</a>
             <a href="/admin/reservas" wire:navigate>⚙️ Salón</a>
+            <a href="/admin/productos" wire:navigate>🍔 Platos</a>
             <form action="{{ route('logout') }}" method="POST" style="display: inline; margin-left: 0.5rem;">
                 @csrf
                 <button type="submit"
@@ -199,6 +200,7 @@
             </form>
         @endauth
 
+
         @guest
             <a href="/login" wire:navigate style="color: #64748b; font-size: 0.85rem; margin-left: 0.5rem;">
                 🔑 Acceso Admin
@@ -207,9 +209,11 @@
     </nav>
 
     {{-- 🎴 3. CONTENIDO HIJO --}}
-    <main class="card">
+    <main class="card" style="max-width: 1100px; width: 95%;">
         @yield('contenido')
+        @yield('content')
     </main>
+
 
     {{-- 🦶 4. PIE DE PÁGINA --}}
     <footer>

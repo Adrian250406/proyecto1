@@ -5,6 +5,8 @@ use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 
+use App\Http\Controllers\Admin\ProductoController as AdminProductoController;
+
 /*
 |--------------------------------------------------------------------------
 | 1. RUTAS PÚBLICAS (Para todos los clientes)
@@ -48,4 +50,13 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/reservas', [ReservaController::class, 'index'])->name('admin.reservas.index');
     Route::put('/reservas/{id}/status', [ReservaController::class, 'updateStatus'])->name('admin.reservas.updateStatus');
+
+    // 🍔 CRUD Maestro de Platos (Avance 4)
+    Route::get('/productos', [AdminProductoController::class, 'index'])->name('admin.productos.index');
+    Route::get('/productos/create', [AdminProductoController::class, 'create'])->name('admin.productos.create');
+    Route::post('/productos', [AdminProductoController::class, 'store'])->name('admin.productos.store');
+    Route::get('/productos/{id}/edit', [AdminProductoController::class, 'edit'])->name('admin.productos.edit');
+    Route::put('/productos/{id}', [AdminProductoController::class, 'update'])->name('admin.productos.update');
+    Route::delete('/productos/{id}', [AdminProductoController::class, 'destroy'])->name('admin.productos.destroy');
+    Route::patch('/productos/{id}/toggle-stock', [AdminProductoController::class, 'toggleStock'])->name('admin.productos.toggleStock');
 });
