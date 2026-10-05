@@ -109,29 +109,45 @@
             background: var(--bg-card);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            padding: 0.65rem 1.8rem;
+            padding: 0.5rem 1.4rem;
             border-radius: 9999px;
             margin-bottom: 2.5rem;
             border: 1px solid var(--border-glass);
             display: flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.4rem;
             box-shadow: var(--shadow-card);
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         nav a {
             color: var(--text-muted);
             text-decoration: none;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 1.1rem;
             border-radius: 9999px;
             font-weight: 600;
-            font-size: 0.92rem;
-            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            transition: all 0.25s ease;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
         }
 
         nav a:hover {
             color: #ffffff;
             background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        /* 🌟 Pestaña Activa con Brillo Gourmet */
+        nav a.active {
+            color: #ffffff !important;
+            background: linear-gradient(135deg, rgba(225, 29, 72, 0.28), rgba(244, 63, 94, 0.15)) !important;
+            border-color: rgba(244, 63, 94, 0.55) !important;
+            box-shadow: 0 0 16px rgba(244, 63, 94, 0.35) !important;
+            font-weight: 800;
         }
 
         /* 🎴 3. TARJETA CONTENEDORA PRINCIPAL */
@@ -180,31 +196,31 @@
         </div>
     @endif
 
-    {{-- 🧭 2. BARRA DE NAVEGACIÓN FLOTANTE (Adaptativa según el Rol) --}}
+    {{-- 🧭 2. BARRA DE NAVEGACIÓN FLOTANTE (Adaptativa según el Rol con Señalización Activa) --}}
     <nav>
         @guest
             {{-- 🍽️ Vistas Públicas Exclusivas para Clientes / Comensales --}}
-            <a href="/" wire:navigate>🏠 Inicio</a>
-            <a href="/menu" wire:navigate>🍔 Menú</a>
-            <a href="/contacto" wire:navigate>📞 Contacto</a>
-            <a href="/reservas" wire:navigate>📅 Reservas</a>
-            <a href="/login" wire:navigate style="color: #94a3b8; font-size: 0.85rem; margin-left: 0.4rem;">
+            <a href="/" wire:navigate class="{{ request()->is('/') ? 'active' : '' }}">🏠 Inicio</a>
+            <a href="/menu" wire:navigate class="{{ request()->is('menu*') ? 'active' : '' }}">🍔 Menú</a>
+            <a href="/contacto" wire:navigate class="{{ request()->is('contacto*') ? 'active' : '' }}">📞 Contacto</a>
+            <a href="/reservas" wire:navigate class="{{ request()->is('reservas*') ? 'active' : '' }}">📅 Reservas</a>
+            <a href="/login" wire:navigate class="{{ request()->is('login*') ? 'active' : '' }}" style="color: #94a3b8; font-size: 0.85rem; margin-left: 0.4rem;">
                 🔑 Acceso Admin
             </a>
         @endguest
 
         @auth
             {{-- ⚙️ Backoffice Ejecutivo Exclusivo para el Administrador --}}
-            <a href="/admin/dashboard" wire:navigate>📊 Dashboard</a>
-            <a href="/admin/reservas" wire:navigate>⚙️ Salón & Mesas</a>
-            <a href="/admin/productos" wire:navigate>🍔 Carta de Platos</a>
-            <a href="/" wire:navigate style="color: #38bdf8; font-size: 0.85rem; margin-left: 0.2rem;" title="Ver la web pública como cliente">
+            <a href="/admin/dashboard" wire:navigate class="{{ request()->is('admin/dashboard*') ? 'active' : '' }}">📊 Dashboard</a>
+            <a href="/admin/reservas" wire:navigate class="{{ request()->is('admin/reservas*') ? 'active' : '' }}">⚙️ Salón & Mesas</a>
+            <a href="/admin/productos" wire:navigate class="{{ request()->is('admin/productos*') ? 'active' : '' }}">🍔 Carta de Platos</a>
+            <a href="/" wire:navigate class="{{ (!request()->is('admin*') && !request()->is('login*')) ? 'active' : '' }}" style="color: #38bdf8; font-size: 0.85rem; margin-left: 0.2rem;" title="Ver la web pública como cliente">
                 🌐 Ver Web
             </a>
             <form action="{{ route('logout') }}" method="POST" style="display: inline; margin-left: 0.4rem;">
                 @csrf
                 <button type="submit"
-                    style="background: none; border: none; color: #f43f5e; cursor: pointer; font-weight: 700; font-size: 0.92rem;">
+                    style="background: none; border: none; color: #f43f5e; cursor: pointer; font-weight: 700; font-size: 0.92rem; padding: 0.5rem 0.8rem; border-radius: 9999px; transition: all 0.2s;">
                     🚪 Salir
                 </button>
             </form>
