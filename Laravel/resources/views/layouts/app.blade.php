@@ -180,32 +180,35 @@
         </div>
     @endif
 
-    {{-- 🧭 2. BARRA DE NAVEGACIÓN FLOTANTE (Centrada y limpia) --}}
+    {{-- 🧭 2. BARRA DE NAVEGACIÓN FLOTANTE (Adaptativa según el Rol) --}}
     <nav>
-        <a href="/" wire:navigate>🏠 Inicio</a>
-        <a href="/menu" wire:navigate>🍔 Menú</a>
-        <a href="/contacto" wire:navigate>📞 Contacto</a>
-        <a href="/reservas" wire:navigate>📅 Reservas</a>
+        @guest
+            {{-- 🍽️ Vistas Públicas Exclusivas para Clientes / Comensales --}}
+            <a href="/" wire:navigate>🏠 Inicio</a>
+            <a href="/menu" wire:navigate>🍔 Menú</a>
+            <a href="/contacto" wire:navigate>📞 Contacto</a>
+            <a href="/reservas" wire:navigate>📅 Reservas</a>
+            <a href="/login" wire:navigate style="color: #94a3b8; font-size: 0.85rem; margin-left: 0.4rem;">
+                🔑 Acceso Admin
+            </a>
+        @endguest
 
         @auth
+            {{-- ⚙️ Backoffice Ejecutivo Exclusivo para el Administrador --}}
             <a href="/admin/dashboard" wire:navigate>📊 Dashboard</a>
-            <a href="/admin/reservas" wire:navigate>⚙️ Salón</a>
-            <a href="/admin/productos" wire:navigate>🍔 Platos</a>
-            <form action="{{ route('logout') }}" method="POST" style="display: inline; margin-left: 0.5rem;">
+            <a href="/admin/reservas" wire:navigate>⚙️ Salón & Mesas</a>
+            <a href="/admin/productos" wire:navigate>🍔 Carta de Platos</a>
+            <a href="/" wire:navigate style="color: #38bdf8; font-size: 0.85rem; margin-left: 0.2rem;" title="Ver la web pública como cliente">
+                🌐 Ver Web
+            </a>
+            <form action="{{ route('logout') }}" method="POST" style="display: inline; margin-left: 0.4rem;">
                 @csrf
                 <button type="submit"
-                    style="background: none; border: none; color: #f43f5e; cursor: pointer; font-weight: 600; font-size: 0.92rem;">
+                    style="background: none; border: none; color: #f43f5e; cursor: pointer; font-weight: 700; font-size: 0.92rem;">
                     🚪 Salir
                 </button>
             </form>
         @endauth
-
-
-        @guest
-            <a href="/login" wire:navigate style="color: #64748b; font-size: 0.85rem; margin-left: 0.5rem;">
-                🔑 Acceso Admin
-            </a>
-        @endguest
     </nav>
 
     {{-- 🎴 3. CONTENIDO HIJO --}}
