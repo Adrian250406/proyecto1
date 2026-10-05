@@ -15,7 +15,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/menu', function () {
-    return view('Menu');
+    return view('menu');
 })->name('menu');
 
 Route::get('/contacto', function () {
