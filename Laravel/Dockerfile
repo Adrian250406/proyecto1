@@ -41,10 +41,10 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 # 10. Exponer el puerto web 80
 EXPOSE 80
 
-# 11. Arrancar optimizaciones de Laravel, migrar BD en TiDB Cloud y levantar Apache
+# 11. Arrancar optimizaciones de Laravel y levantar Apache
 CMD php artisan config:cache && \
     php artisan route:cache && \
     php artisan view:cache && \
     php artisan storage:link && \
-    php artisan migrate --force && \
     apache2-foreground
+
