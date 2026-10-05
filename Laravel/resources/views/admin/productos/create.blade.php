@@ -1,124 +1,122 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+@section('titulo', 'Nuevo Plato Criollo')
+
+@section('contenido')
+<div style="width: 100%; max-width: 750px; margin: 0 auto; padding: 0.5rem 0;">
     
     <!-- Encabezado -->
-    <div class="flex items-center justify-between pb-6 border-b border-neutral-800">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1rem;">
         <div>
-            <h1 class="text-3xl font-extrabold text-white flex items-center gap-3">
+            <h1 style="color: #f43f5e; margin: 0; font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
                 <span>➕</span> Nuevo Plato Criollo
             </h1>
-            <p class="text-neutral-400 text-sm mt-1">
+            <p style="color: #94a3b8; margin: 0.3rem 0 0 0; font-size: 0.95rem;">
                 Registra una nueva delicia gastronómica para la carta de "El Buen Sabor".
             </p>
         </div>
-        <a href="{{ route('admin.productos.index') }}" 
-           class="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 rounded-xl text-sm font-semibold transition">
+        <a href="{{ route('admin.productos.index') }}" wire:navigate
+           style="background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.12); padding: 0.5rem 1rem; border-radius: 0.75rem; text-decoration: none; font-weight: 700; font-size: 0.85rem; transition: all 0.2s;">
             ← Volver a Platos
         </a>
     </div>
 
     <!-- Formulario -->
-    <div class="mt-8 bg-neutral-900/90 border border-neutral-800 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl">
-        <form action="{{ route('admin.productos.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 1.25rem; padding: 1.5rem; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
+        <form action="{{ route('admin.productos.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <!-- Nombre del Plato -->
-            <div>
-                <label for="nombre" class="block text-sm font-medium text-neutral-300 mb-2">
-                    Nombre del Plato <span class="text-red-500">*</span>
+            <div style="margin-bottom: 1.25rem;">
+                <label for="nombre" style="display: block; color: #cbd5e1; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem;">
+                    Nombre del Plato <span style="color: #f43f5e;">*</span>
                 </label>
                 <input type="text" name="nombre" id="nombre" value="{{ old('nombre') }}" required
                        placeholder="Ej: Lomo Saltado Especial al Pisco"
-                       class="w-full px-4 py-3 bg-neutral-950 border border-neutral-800 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition @error('nombre') border-red-500 @enderror">
+                       style="width: 100%; background: rgba(0,0,0,0.4); border: 1px solid {{ $errors->has('nombre') ? '#ef4444' : 'rgba(255,255,255,0.15)' }}; color: #fff; padding: 0.7rem 1rem; border-radius: 0.6rem; font-size: 0.9rem; outline: none;">
                 @error('nombre')
-                    <p class="text-red-400 text-xs mt-1.5 flex items-center gap-1"><span>⚠️</span> {{ $message }}</p>
+                    <p style="color: #f87171; font-size: 0.78rem; margin-top: 0.3rem;">⚠️ {{ $message }}</p>
                 @enderror
             </div>
 
-            <!-- Fila: Precio y Stock Inicial -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <!-- Precio en Soles -->
+            <!-- Fila: Precio y Stock -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">
+                <!-- Precio -->
                 <div>
-                    <label for="precio" class="block text-sm font-medium text-neutral-300 mb-2">
-                        Precio de Carta (S/ PEN) <span class="text-red-500">*</span>
+                    <label for="precio" style="display: block; color: #cbd5e1; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem;">
+                        Precio de Carta (S/ PEN) <span style="color: #f43f5e;">*</span>
                     </label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-500 font-bold">S/</span>
+                    <div style="position: relative;">
+                        <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: #f59e0b; font-weight: 800;">S/</span>
                         <input type="number" step="0.50" min="0.50" name="precio" id="precio" value="{{ old('precio') }}" required
                                placeholder="45.00"
-                               class="w-full pl-10 pr-4 py-3 bg-neutral-950 border border-neutral-800 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition @error('precio') border-red-500 @enderror">
+                               style="width: 100%; background: rgba(0,0,0,0.4); border: 1px solid {{ $errors->has('precio') ? '#ef4444' : 'rgba(255,255,255,0.15)' }}; color: #fff; padding: 0.7rem 1rem 0.7rem 2.2rem; border-radius: 0.6rem; font-size: 0.9rem; outline: none;">
                     </div>
                     @error('precio')
-                        <p class="text-red-400 text-xs mt-1.5 flex items-center gap-1"><span>⚠️</span> {{ $message }}</p>
+                        <p style="color: #f87171; font-size: 0.78rem; margin-top: 0.3rem;">⚠️ {{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- Stock / Porciones en Cocina -->
+                <!-- Stock Inicial -->
                 <div>
-                    <label for="stock" class="block text-sm font-medium text-neutral-300 mb-2">
-                        Porciones en Cocina (Stock) <span class="text-red-500">*</span>
+                    <label for="stock" style="display: block; color: #cbd5e1; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem;">
+                        Porciones en Cocina (Stock) <span style="color: #f43f5e;">*</span>
                     </label>
                     <input type="number" min="0" name="stock" id="stock" value="{{ old('stock', 20) }}" required
                            placeholder="20"
-                           class="w-full px-4 py-3 bg-neutral-950 border border-neutral-800 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition @error('stock') border-red-500 @enderror">
+                           style="width: 100%; background: rgba(0,0,0,0.4); border: 1px solid {{ $errors->has('stock') ? '#ef4444' : 'rgba(255,255,255,0.15)' }}; color: #fff; padding: 0.7rem 1rem; border-radius: 0.6rem; font-size: 0.9rem; outline: none;">
                     @error('stock')
-                        <p class="text-red-400 text-xs mt-1.5 flex items-center gap-1"><span>⚠️</span> {{ $message }}</p>
+                        <p style="color: #f87171; font-size: 0.78rem; margin-top: 0.3rem;">⚠️ {{ $message }}</p>
                     @enderror
                 </div>
             </div>
 
             <!-- Descripción Gastronómica -->
-            <div>
-                <label for="descripcion" class="block text-sm font-medium text-neutral-300 mb-2">
-                    Descripción Gastronómica e Ingredientes <span class="text-red-500">*</span>
+            <div style="margin-bottom: 1.25rem;">
+                <label for="descripcion" style="display: block; color: #cbd5e1; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem;">
+                    Descripción Gastronómica e Ingredientes <span style="color: #f43f5e;">*</span>
                 </label>
-                <textarea name="descripcion" id="descripcion" rows="4" required
+                <textarea name="descripcion" id="descripcion" rows="3" required
                           placeholder="Describe el corte de carne, guarniciones, tipo de cocción y notas de sabor..."
-                          class="w-full px-4 py-3 bg-neutral-950 border border-neutral-800 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition @error('descripcion') border-red-500 @enderror">{{ old('descripcion') }}</textarea>
+                          style="width: 100%; background: rgba(0,0,0,0.4); border: 1px solid {{ $errors->has('descripcion') ? '#ef4444' : 'rgba(255,255,255,0.15)' }}; color: #fff; padding: 0.7rem 1rem; border-radius: 0.6rem; font-size: 0.9rem; outline: none;">{{ old('descripcion') }}</textarea>
                 @error('descripcion')
-                    <p class="text-red-400 text-xs mt-1.5 flex items-center gap-1"><span>⚠️</span> {{ $message }}</p>
+                    <p style="color: #f87171; font-size: 0.78rem; margin-top: 0.3rem;">⚠️ {{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Fotografía del Plato -->
-            <div>
-                <label class="block text-sm font-medium text-neutral-300 mb-2">
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; color: #cbd5e1; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem;">
                     Fotografía del Plato (JPG, PNG, WEBP - Máx 3MB)
                 </label>
-                <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-neutral-800 border-dashed rounded-2xl bg-neutral-950/50 hover:border-neutral-700 transition">
-                    <div class="space-y-2 text-center">
-                        <div class="text-4xl">📸</div>
-                        <div class="flex text-sm text-neutral-400 justify-center">
-                            <label for="imagen" class="relative cursor-pointer bg-neutral-800 rounded-lg px-3 py-1.5 font-medium text-amber-400 hover:text-amber-300 transition">
-                                <span>Seleccionar archivo</span>
-                                <input id="imagen" name="imagen" type="file" accept="image/*" class="sr-only" onchange="previewImage(event)">
-                            </label>
-                        </div>
-                        <p class="text-xs text-neutral-500">Formatos recomendados: 800x600 px en alta definición</p>
-                    </div>
+                <div style="background: rgba(0,0,0,0.3); border: 2px dashed rgba(255,255,255,0.15); border-radius: 1rem; padding: 1.5rem; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📸</div>
+                    <label for="imagen" style="display: inline-block; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #fbbf24; padding: 0.5rem 1.25rem; border-radius: 0.6rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.2s;">
+                        Seleccionar Archivo de Imagen
+                    </label>
+                    <input id="imagen" name="imagen" type="file" accept="image/*" style="display: none;" onchange="previewImage(event)">
+                    <p style="color: #64748b; font-size: 0.75rem; margin-top: 0.5rem;">Resolución recomendada: 800x600 px en alta definición</p>
                 </div>
                 
-                <!-- Vista previa de la imagen -->
-                <div id="imagePreviewContainer" class="hidden mt-4 text-center">
-                    <p class="text-xs text-neutral-400 mb-2 font-medium">Vista Previa:</p>
-                    <img id="imagePreview" src="#" alt="Previsualización" class="mx-auto h-44 w-72 object-cover rounded-2xl border border-neutral-700 shadow-lg">
+                <!-- Vista previa -->
+                <div id="imagePreviewContainer" style="display: none; margin-top: 1rem; text-align: center;">
+                    <p style="color: #38bdf8; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.4rem;">Vista Previa de la Fotografía:</p>
+                    <img id="imagePreview" src="#" alt="Previsualización" style="max-height: 180px; width: auto; border-radius: 0.75rem; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); object-fit: cover;">
                 </div>
                 @error('imagen')
-                    <p class="text-red-400 text-xs mt-1.5 flex items-center gap-1"><span>⚠️</span> {{ $message }}</p>
+                    <p style="color: #f87171; font-size: 0.78rem; margin-top: 0.3rem;">⚠️ {{ $message }}</p>
                 @enderror
             </div>
 
-            <!-- Botones de Acción -->
-            <div class="pt-6 border-t border-neutral-800 flex items-center justify-end gap-4">
-                <a href="{{ route('admin.productos.index') }}" 
-                   class="px-5 py-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 rounded-xl font-semibold text-sm transition">
+            <!-- Botones -->
+            <div style="display: flex; justify-content: flex-end; gap: 0.75rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08);">
+                <a href="{{ route('admin.productos.index') }}" wire:navigate
+                   style="background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.12); padding: 0.6rem 1.25rem; border-radius: 0.6rem; text-decoration: none; font-weight: 600; font-size: 0.85rem;">
                     Cancelar
                 </a>
                 <button type="submit" 
-                        class="px-8 py-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl font-bold text-sm shadow-xl shadow-red-900/40 transform hover:scale-105 transition flex items-center gap-2">
-                    <span>💾</span> Guardar Plato en Carta
+                        style="background: linear-gradient(135deg, #e11d48, #be123c); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 0.6rem; font-weight: 800; font-size: 0.85rem; cursor: pointer; box-shadow: 0 10px 20px rgba(225, 29, 72, 0.4);">
+                    💾 Guardar Plato en Carta
                 </button>
             </div>
         </form>
@@ -135,7 +133,7 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 preview.src = e.target.result;
-                container.classList.remove('hidden');
+                container.style.display = 'block';
             }
             reader.readAsDataURL(input.files[0]);
         }

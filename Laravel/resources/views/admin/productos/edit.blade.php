@@ -1,131 +1,133 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+@section('titulo', 'Editar Plato: ' . $producto->nombre)
+
+@section('contenido')
+<div style="width: 100%; max-width: 750px; margin: 0 auto; padding: 0.5rem 0;">
     
     <!-- Encabezado -->
-    <div class="flex items-center justify-between pb-6 border-b border-neutral-800">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1rem;">
         <div>
-            <h1 class="text-3xl font-extrabold text-white flex items-center gap-3">
-                <span>✏️</span> Editar Plato: {{ $producto->nombre }}
+            <h1 style="color: #f43f5e; margin: 0; font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
+                <span>✏️</span> Editar: {{ $producto->nombre }}
             </h1>
-            <p class="text-neutral-400 text-sm mt-1">
+            <p style="color: #94a3b8; margin: 0.3rem 0 0 0; font-size: 0.95rem;">
                 Actualiza los precios, stock en cocina, recetas o fotografía del plato.
             </p>
         </div>
-        <a href="{{ route('admin.productos.index') }}" 
-           class="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 rounded-xl text-sm font-semibold transition">
+        <a href="{{ route('admin.productos.index') }}" wire:navigate
+           style="background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.12); padding: 0.5rem 1rem; border-radius: 0.75rem; text-decoration: none; font-weight: 700; font-size: 0.85rem; transition: all 0.2s;">
             ← Volver a Platos
         </a>
     </div>
 
     <!-- Formulario de Edición -->
-    <div class="mt-8 bg-neutral-900/90 border border-neutral-800 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl">
-        <form action="{{ route('admin.productos.update', $producto->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 1.25rem; padding: 1.5rem; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
+        <form action="{{ route('admin.productos.update', $producto->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
             <!-- Nombre del Plato -->
-            <div>
-                <label for="nombre" class="block text-sm font-medium text-neutral-300 mb-2">
-                    Nombre del Plato <span class="text-red-500">*</span>
+            <div style="margin-bottom: 1.25rem;">
+                <label for="nombre" style="display: block; color: #cbd5e1; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem;">
+                    Nombre del Plato <span style="color: #f43f5e;">*</span>
                 </label>
                 <input type="text" name="nombre" id="nombre" value="{{ old('nombre', $producto->nombre) }}" required
                        placeholder="Ej: Lomo Saltado Especial al Pisco"
-                       class="w-full px-4 py-3 bg-neutral-950 border border-neutral-800 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition @error('nombre') border-red-500 @enderror">
+                       style="width: 100%; background: rgba(0,0,0,0.4); border: 1px solid {{ $errors->has('nombre') ? '#ef4444' : 'rgba(255,255,255,0.15)' }}; color: #fff; padding: 0.7rem 1rem; border-radius: 0.6rem; font-size: 0.9rem; outline: none;">
                 @error('nombre')
-                    <p class="text-red-400 text-xs mt-1.5 flex items-center gap-1"><span>⚠️</span> {{ $message }}</p>
+                    <p style="color: #f87171; font-size: 0.78rem; margin-top: 0.3rem;">⚠️ {{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Fila: Precio y Stock -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <!-- Precio en Soles -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">
+                <!-- Precio -->
                 <div>
-                    <label for="precio" class="block text-sm font-medium text-neutral-300 mb-2">
-                        Precio de Carta (S/ PEN) <span class="text-red-500">*</span>
+                    <label for="precio" style="display: block; color: #cbd5e1; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem;">
+                        Precio de Carta (S/ PEN) <span style="color: #f43f5e;">*</span>
                     </label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-500 font-bold">S/</span>
+                    <div style="position: relative;">
+                        <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: #f59e0b; font-weight: 800;">S/</span>
                         <input type="number" step="0.50" min="0.50" name="precio" id="precio" value="{{ old('precio', $producto->precio) }}" required
                                placeholder="45.00"
-                               class="w-full pl-10 pr-4 py-3 bg-neutral-950 border border-neutral-800 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition @error('precio') border-red-500 @enderror">
+                               style="width: 100%; background: rgba(0,0,0,0.4); border: 1px solid {{ $errors->has('precio') ? '#ef4444' : 'rgba(255,255,255,0.15)' }}; color: #fff; padding: 0.7rem 1rem 0.7rem 2.2rem; border-radius: 0.6rem; font-size: 0.9rem; outline: none;">
                     </div>
                     @error('precio')
-                        <p class="text-red-400 text-xs mt-1.5 flex items-center gap-1"><span>⚠️</span> {{ $message }}</p>
+                        <p style="color: #f87171; font-size: 0.78rem; margin-top: 0.3rem;">⚠️ {{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- Stock / Porciones en Cocina -->
+                <!-- Stock en Cocina -->
                 <div>
-                    <label for="stock" class="block text-sm font-medium text-neutral-300 mb-2">
-                        Porciones en Cocina (Stock) <span class="text-red-500">*</span>
+                    <label for="stock" style="display: block; color: #cbd5e1; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem;">
+                        Porciones en Cocina (Stock) <span style="color: #f43f5e;">*</span>
                     </label>
                     <input type="number" min="0" name="stock" id="stock" value="{{ old('stock', $producto->stock) }}" required
                            placeholder="20"
-                           class="w-full px-4 py-3 bg-neutral-950 border border-neutral-800 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition @error('stock') border-red-500 @enderror">
+                           style="width: 100%; background: rgba(0,0,0,0.4); border: 1px solid {{ $errors->has('stock') ? '#ef4444' : 'rgba(255,255,255,0.15)' }}; color: #fff; padding: 0.7rem 1rem; border-radius: 0.6rem; font-size: 0.9rem; outline: none;">
                     @error('stock')
-                        <p class="text-red-400 text-xs mt-1.5 flex items-center gap-1"><span>⚠️</span> {{ $message }}</p>
+                        <p style="color: #f87171; font-size: 0.78rem; margin-top: 0.3rem;">⚠️ {{ $message }}</p>
                     @enderror
                 </div>
             </div>
 
             <!-- Descripción Gastronómica -->
-            <div>
-                <label for="descripcion" class="block text-sm font-medium text-neutral-300 mb-2">
-                    Descripción Gastronómica e Ingredientes <span class="text-red-500">*</span>
+            <div style="margin-bottom: 1.25rem;">
+                <label for="descripcion" style="display: block; color: #cbd5e1; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem;">
+                    Descripción Gastronómica e Ingredientes <span style="color: #f43f5e;">*</span>
                 </label>
-                <textarea name="descripcion" id="descripcion" rows="4" required
+                <textarea name="descripcion" id="descripcion" rows="3" required
                           placeholder="Describe el corte de carne, guarniciones, tipo de cocción y notas de sabor..."
-                          class="w-full px-4 py-3 bg-neutral-950 border border-neutral-800 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition @error('descripcion') border-red-500 @enderror">{{ old('descripcion', $producto->descripcion) }}</textarea>
+                          style="width: 100%; background: rgba(0,0,0,0.4); border: 1px solid {{ $errors->has('descripcion') ? '#ef4444' : 'rgba(255,255,255,0.15)' }}; color: #fff; padding: 0.7rem 1rem; border-radius: 0.6rem; font-size: 0.9rem; outline: none;">{{ old('descripcion', $producto->descripcion) }}</textarea>
                 @error('descripcion')
-                    <p class="text-red-400 text-xs mt-1.5 flex items-center gap-1"><span>⚠️</span> {{ $message }}</p>
+                    <p style="color: #f87171; font-size: 0.78rem; margin-top: 0.3rem;">⚠️ {{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Fotografía Actual y Reemplazo -->
-            <div>
-                <label class="block text-sm font-medium text-neutral-300 mb-2">
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; color: #cbd5e1; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem;">
                     Fotografía del Plato (JPG, PNG, WEBP - Máx 3MB)
                 </label>
                 
-                <div class="flex flex-col sm:flex-row items-center gap-6 p-4 bg-neutral-950 rounded-2xl border border-neutral-800">
-                    <div class="text-center sm:text-left">
-                        <span class="text-xs text-neutral-400 block mb-2 font-medium">Foto Actual:</span>
+                <div style="display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 1rem;">
+                    <div>
+                        <span style="color: #94a3b8; font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 0.3rem;">Foto Actual:</span>
                         <img src="{{ asset('images/platos/' . $producto->imagen) }}" 
                              alt="{{ $producto->nombre }}"
-                             class="h-28 w-44 object-cover rounded-xl border border-neutral-700 shadow"
+                             style="height: 90px; width: 130px; object-fit: cover; border-radius: 0.6rem; border: 1px solid rgba(255,255,255,0.2);"
                              onerror="this.src='{{ asset('images/platos/lomo-saltado.jpg') }}'">
                     </div>
 
-                    <div class="flex-1 w-full text-center sm:text-left">
-                        <label for="imagen" class="cursor-pointer inline-block bg-neutral-800 hover:bg-neutral-700 text-amber-400 hover:text-amber-300 px-4 py-2.5 rounded-xl text-sm font-semibold transition">
+                    <div style="flex: 1; min-width: 200px;">
+                        <label for="imagen" style="display: inline-block; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #fbbf24; padding: 0.45rem 1rem; border-radius: 0.6rem; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s;">
                             📷 Cambiar Fotografía
                         </label>
-                        <input id="imagen" name="imagen" type="file" accept="image/*" class="sr-only" onchange="previewEditImage(event)">
-                        <p class="text-xs text-neutral-500 mt-2">Deja este campo vacío si deseas conservar la fotografía actual.</p>
+                        <input id="imagen" name="imagen" type="file" accept="image/*" style="display: none;" onchange="previewEditImage(event)">
+                        <p style="color: #64748b; font-size: 0.75rem; margin-top: 0.4rem;">Deja este campo vacío si deseas conservar la foto actual.</p>
                     </div>
                 </div>
 
                 <!-- Vista Previa si sube nueva foto -->
-                <div id="newImagePreviewContainer" class="hidden mt-4 text-center">
-                    <p class="text-xs text-amber-400 mb-2 font-medium">Nueva Foto Seleccionada:</p>
-                    <img id="newImagePreview" src="#" alt="Nueva Previsualización" class="mx-auto h-40 w-64 object-cover rounded-2xl border-2 border-amber-500/50 shadow-xl">
+                <div id="newImagePreviewContainer" style="display: none; margin-top: 1rem; text-align: center;">
+                    <p style="color: #f59e0b; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.4rem;">Nueva Fotografía Seleccionada:</p>
+                    <img id="newImagePreview" src="#" alt="Nueva Previsualización" style="max-height: 180px; width: auto; border-radius: 0.75rem; border: 1px solid #f59e0b; box-shadow: 0 10px 25px rgba(0,0,0,0.5); object-fit: cover;">
                 </div>
                 @error('imagen')
-                    <p class="text-red-400 text-xs mt-1.5 flex items-center gap-1"><span>⚠️</span> {{ $message }}</p>
+                    <p style="color: #f87171; font-size: 0.78rem; margin-top: 0.3rem;">⚠️ {{ $message }}</p>
                 @enderror
             </div>
 
-            <!-- Botones de Acción -->
-            <div class="pt-6 border-t border-neutral-800 flex items-center justify-end gap-4">
-                <a href="{{ route('admin.productos.index') }}" 
-                   class="px-5 py-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 rounded-xl font-semibold text-sm transition">
+            <!-- Botones -->
+            <div style="display: flex; justify-content: flex-end; gap: 0.75rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08);">
+                <a href="{{ route('admin.productos.index') }}" wire:navigate
+                   style="background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.12); padding: 0.6rem 1.25rem; border-radius: 0.6rem; text-decoration: none; font-weight: 600; font-size: 0.85rem;">
                     Cancelar
                 </a>
                 <button type="submit" 
-                        class="px-8 py-3 bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-black font-extrabold rounded-xl text-sm shadow-xl shadow-amber-900/30 transform hover:scale-105 transition flex items-center gap-2">
-                    <span>💾</span> Actualizar Plato
+                        style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; border: none; padding: 0.6rem 1.5rem; border-radius: 0.6rem; font-weight: 900; font-size: 0.85rem; cursor: pointer; box-shadow: 0 10px 20px rgba(245, 158, 11, 0.4);">
+                    💾 Actualizar Plato
                 </button>
             </div>
         </form>
@@ -142,7 +144,7 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 preview.src = e.target.result;
-                container.classList.remove('hidden');
+                container.style.display = 'block';
             }
             reader.readAsDataURL(input.files[0]);
         }
