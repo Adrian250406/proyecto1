@@ -14,9 +14,14 @@
                 </p>
             </div>
             <div class="flex items-center gap-3">
+                <a href="{{ route('admin.productos.inventarioPdf') }}" target="_blank"
+                    title="Generar e imprimir balance de stock y carta gastronómica"
+                    class="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-amber-300 border border-amber-500/30 rounded-xl text-sm font-semibold flex items-center gap-2 transition">
+                    <span>🖨️</span> Reporte Carta PDF
+                </a>
                 <a href="{{ route('admin.dashboard') }}"
                     class="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 rounded-xl text-sm font-semibold transition">
-                    ← Volver al Dashboard
+                    ← Dashboard
                 </a>
                 <a href="{{ route('admin.productos.create') }}"
                     class="px-5 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-sm font-bold shadow-lg shadow-red-900/30 flex items-center gap-2 transition transform hover:scale-105">

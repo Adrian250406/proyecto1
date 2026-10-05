@@ -15,14 +15,24 @@
                 Control de aforo en tiempo real, asignación de mesas y monitoreo de tolerancia (15 min).
             </p>
         </div>
-        <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+        <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+            <a href="{{ route('admin.reservas.exportCsv', ['fecha' => $filtroFecha ?? 'todas', 'estado' => $filtroEstado ?? '']) }}" 
+               title="Descargar lista de reservas en formato CSV / Excel"
+               style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #6ee7b7; padding: 0.5rem 0.9rem; border-radius: 0.75rem; text-decoration: none; font-weight: 700; font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem; transition: all 0.2s;">
+                <span>📥</span> Exportar CSV
+            </a>
+            <a href="{{ route('admin.reservas.hojaServicioPdf', ['fecha' => $filtroFecha ?? 'hoy']) }}" target="_blank"
+               title="Generar e imprimir hoja física de servicio para metre y mozos"
+               style="background: rgba(168, 85, 247, 0.15); border: 1px solid #a855f7; color: #d8b4fe; padding: 0.5rem 0.9rem; border-radius: 0.75rem; text-decoration: none; font-weight: 700; font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem; transition: all 0.2s;">
+                <span>🖨️</span> Hoja Servicio PDF
+            </a>
             <a href="{{ route('admin.dashboard') }}" wire:navigate 
-               style="background: rgba(56, 189, 248, 0.12); border: 1px solid #38bdf8; color: #7dd3fc; padding: 0.5rem 1rem; border-radius: 0.75rem; text-decoration: none; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.4rem; transition: all 0.2s;">
+               style="background: rgba(56, 189, 248, 0.12); border: 1px solid #38bdf8; color: #7dd3fc; padding: 0.5rem 0.9rem; border-radius: 0.75rem; text-decoration: none; font-weight: 700; font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem; transition: all 0.2s;">
                 <span>📊</span> Dashboard
             </a>
             <a href="{{ route('admin.productos.index') }}" wire:navigate 
-               style="background: rgba(245, 158, 11, 0.12); border: 1px solid #f59e0b; color: #fbbf24; padding: 0.5rem 1rem; border-radius: 0.75rem; text-decoration: none; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.4rem; transition: all 0.2s;">
-                <span>🍔</span> Carta de Platos
+               style="background: rgba(245, 158, 11, 0.12); border: 1px solid #f59e0b; color: #fbbf24; padding: 0.5rem 0.9rem; border-radius: 0.75rem; text-decoration: none; font-weight: 700; font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem; transition: all 0.2s;">
+                <span>🍔</span> Platos
             </a>
         </div>
     </div>

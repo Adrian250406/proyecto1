@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 
 use App\Http\Controllers\Admin\ProductoController as AdminProductoController;
+use App\Http\Controllers\Admin\ReporteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,4 +65,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/productos/{id}', [AdminProductoController::class, 'update'])->name('admin.productos.update');
     Route::delete('/productos/{id}', [AdminProductoController::class, 'destroy'])->name('admin.productos.destroy');
     Route::patch('/productos/{id}/toggle-stock', [AdminProductoController::class, 'toggleStock'])->name('admin.productos.toggleStock');
+
+    // 📊 Reportes Ejecutivos & Exportación (Avance 4 - REQ-AV4-03)
+    Route::get('/reservas/exportar/csv', [ReporteController::class, 'exportarReservasCsv'])->name('admin.reservas.exportCsv');
+    Route::get('/reservas/reporte/hoja-servicio-pdf', [ReporteController::class, 'hojaServicioPdf'])->name('admin.reservas.hojaServicioPdf');
+    Route::get('/productos/reporte/inventario-pdf', [ReporteController::class, 'inventarioPlatosPdf'])->name('admin.productos.inventarioPdf');
 });
