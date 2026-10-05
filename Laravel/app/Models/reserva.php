@@ -14,6 +14,8 @@ class reserva extends Model
         'telefono',
         'fecha_reserva',
         'estado',
+        'mesa',
+        'notas',
     ];
 
     protected $casts = [

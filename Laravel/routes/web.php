@@ -48,8 +48,13 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 */
 Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    
+    // ⚙️ Gestión de Salón y Reservas (Avance 4)
     Route::get('/reservas', [ReservaController::class, 'index'])->name('admin.reservas.index');
+    Route::put('/reservas/{id}', [ReservaController::class, 'update'])->name('admin.reservas.update');
     Route::put('/reservas/{id}/status', [ReservaController::class, 'updateStatus'])->name('admin.reservas.updateStatus');
+    Route::patch('/reservas/{id}/mesa', [ReservaController::class, 'assignTable'])->name('admin.reservas.assignTable');
+    Route::delete('/reservas/{id}', [ReservaController::class, 'destroy'])->name('admin.reservas.destroy');
 
     // 🍔 CRUD Maestro de Platos (Avance 4)
     Route::get('/productos', [AdminProductoController::class, 'index'])->name('admin.productos.index');
